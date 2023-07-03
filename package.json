@@ -1,5 +1,5 @@
 {
-  "name": "react-package-sample",
+  "name": "simpdf",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/cjs/index.js",
@@ -7,7 +7,7 @@
   "types": "./dist/esm/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/handwoo24/react-package-sample.git"
+    "url": "git+https://github.com/handwoo24/simpdf.git"
   },
   "peerDependencies": {
     "react": ">=16"
