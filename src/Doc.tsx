@@ -1,10 +1,10 @@
 import type { CSSProperties, FC } from 'react'
-import type { GetPdfDocumentParams, PDFDocumentProxy } from './pdfjs'
+import type { DocumentInitParameters, PDFDocumentProxy } from './pdfjs'
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { getDocument, renderPage } from './pdfjs'
 
-export interface DocProps extends GetPdfDocumentParams {
+export interface DocProps extends DocumentInitParameters {
   pageNumber?: number
   onLoad?: (doc: PDFDocumentProxy) => void
   style?: CSSProperties

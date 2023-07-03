@@ -37,6 +37,7 @@
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.2",
+    "@types/pdfjs-dist": "^2.10.378",
     "@types/react": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
