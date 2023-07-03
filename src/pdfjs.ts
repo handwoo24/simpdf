@@ -1,16 +1,17 @@
-import { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
+import { PDFDocumentProxy, PDFPageProxy, DocumentInitParameters } from 'pdfjs-dist/types/src/display/api'
 
 export { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
 
-export interface GetPdfDocumentParams {
+export interface GetPdfDocumentParams extends DocumentInitParameters {
   url?: string
 }
 // Why? this is for SSR(Server Side Rendering), because pdfjs-dist is not working on SSR. In next.js, it would over limited server memory.
 const initPdfJs = (typeof window !== 'undefined' &&
   import('pdfjs-dist').then(({ getDocument, version, GlobalWorkerOptions }) => {
     GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
-    return ({ url }: GetPdfDocumentParams) =>
+    return ({ url, data }: GetPdfDocumentParams) =>
       getDocument({
+        data,
         url,
         cMapUrl: `https://unpkg.com/pdfjs-dist@${version}/cmaps/`,
         cMapPacked: true,
