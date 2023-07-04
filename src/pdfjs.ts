@@ -1,5 +1,5 @@
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
-import { getDocument as initDocument, version, GlobalWorkerOptions } from 'pdfjs-dist'
+import { GlobalWorkerOptions, getDocument as initDocument, version } from 'pdfjs-dist'
 
 export type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
 
