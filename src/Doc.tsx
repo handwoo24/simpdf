@@ -15,12 +15,11 @@ const Doc: FC<DocProps> = ({ url, pageNumber = 1, onLoad, scale = 1, style }) =>
   const containerRef = useRef<HTMLDivElement>(null)
   const [pdf, setPdf] = useState<PDFDocumentProxy>()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const nextCanvasRef = useRef<HTMLCanvasElement>(null)
   const measureRef = useRef<number>()
 
   const render = useCallback(
     (pageNumber: number, canvas: HTMLCanvasElement | null) => {
-      if (!containerRef.current || !canvasRef.current || !nextCanvasRef.current) return
+      if (!containerRef.current || !canvasRef.current) return
       const containerStyle = window.getComputedStyle(containerRef.current)
       const containerWidth = parseFloat(containerStyle.width)
       if (!measureRef.current) {
