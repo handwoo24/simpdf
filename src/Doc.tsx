@@ -1,17 +1,17 @@
 import type { CSSProperties, FC } from 'react'
-import type { GetDocumentParams, PDFDocumentProxy } from './pdfjs'
+import type { DocumentParameters, PDFDocumentProxy } from './pdfjs'
 import React from 'react'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { getDocument, renderPage } from './pdfjs'
 
-export interface DocProps extends GetDocumentParams {
+export interface DocProps extends DocumentParameters {
   pageNumber?: number
   onLoad?: (doc: PDFDocumentProxy) => void
   style?: CSSProperties
   scale?: number
 }
 
-const Doc: FC<DocProps> = ({ url, pageNumber = 1, onLoad, scale = 1, style }) => {
+const Doc: FC<DocProps> = ({ pageNumber = 1, scale = 1, onLoad, style, ...docParams }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [pdf, setPdf] = useState<PDFDocumentProxy>()
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -38,11 +38,11 @@ const Doc: FC<DocProps> = ({ url, pageNumber = 1, onLoad, scale = 1, style }) =>
   }, [])
 
   useEffect(() => {
-    getDocument({ url }).then((doc) => {
+    getDocument(docParams).then((doc) => {
       setPdf(doc)
       if (onLoad) onLoad(doc)
     })
-  }, [onLoad, url])
+  }, [onLoad, docParams])
 
   useEffect(() => {
     if (!pageNumber || !pdf) return
