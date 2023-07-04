@@ -1,23 +1,19 @@
-import { PDFDocumentProxy, PDFPageProxy, DocumentInitParameters } from 'pdfjs-dist/types/src/display/api'
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
+import { getDocument as initDocument, version, GlobalWorkerOptions } from 'pdfjs-dist'
 
-export type { PDFDocumentProxy, PDFPageProxy, DocumentInitParameters } from 'pdfjs-dist/types/src/display/api'
+export type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
 
-// Why? this is for SSR(Server Side Rendering), because pdfjs-dist is not working on SSR. In next.js, it would over limited server memory.
-const initPdfJs = (typeof window !== 'undefined' &&
-  import('pdfjs-dist').then(({ getDocument, version, GlobalWorkerOptions }) => {
-    GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
-    return ({ url, data }: DocumentInitParameters) =>
-      getDocument({
-        data,
-        url,
-        cMapUrl: `https://unpkg.com/pdfjs-dist@${version}/cmaps/`,
-        cMapPacked: true,
-        standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${version}/standard_fonts`,
-      }).promise
-  })) as Promise<({ url }: DocumentInitParameters) => Promise<PDFDocumentProxy>>
+export type GetDocumentParams = { url: string }
 
-// Why? resolve promise
-export const getDocument = (params: DocumentInitParameters) => initPdfJs.then((fn) => fn(params))
+GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
+
+export const getDocument = ({ url }: GetDocumentParams) =>
+  initDocument({
+    url,
+    cMapUrl: `https://unpkg.com/pdfjs-dist@${version}/cmaps/`,
+    cMapPacked: true,
+    standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${version}/standard_fonts`,
+  }).promise
 
 export const getViewportCanvas = async (page: PDFPageProxy, scale: number): Promise<HTMLCanvasElement> => {
   const canvas = document.createElement('canvas')
