@@ -1,15 +1,17 @@
-import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
+import type { PDFDocumentProxy, PDFPageProxy, DocumentInitParameters } from 'pdfjs-dist/types/src/display/api'
 import { GlobalWorkerOptions, getDocument as initDocument, version } from 'pdfjs-dist'
 
 export type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
+export type DocumentParameters = Omit<DocumentInitParameters, 'cMapUrl' | 'cMapPacked' | 'standardFontDataUrl'>
 
-export type GetDocumentParams = { url: string }
+export const initPDFWorker = () => {
+  GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
+  return
+}
 
-GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
-
-export const getDocument = ({ url }: GetDocumentParams) =>
+export const getDocument = (params: DocumentParameters) =>
   initDocument({
-    url,
+    ...params,
     cMapUrl: `https://unpkg.com/pdfjs-dist@${version}/cmaps/`,
     cMapPacked: true,
     standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${version}/standard_fonts`,
