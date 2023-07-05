@@ -1,17 +1,16 @@
-import type { PDFDocumentProxy, PDFPageProxy, DocumentInitParameters } from 'pdfjs-dist/types/src/display/api'
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
 import { GlobalWorkerOptions, getDocument as initDocument, version } from 'pdfjs-dist'
 
 export type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist/types/src/display/api'
-export type DocumentParameters = Omit<DocumentInitParameters, 'cMapUrl' | 'cMapPacked' | 'standardFontDataUrl'>
+export type DocumentParameters = { url: string }
 
-export const initPDFWorker = () => {
+export const initPDFWorker = (): void => {
   GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`
-  return
 }
 
-export const getDocument = (params: DocumentParameters) =>
+export const getDocument = ({ url }: DocumentParameters) =>
   initDocument({
-    ...params,
+    url,
     cMapUrl: `https://unpkg.com/pdfjs-dist@${version}/cmaps/`,
     cMapPacked: true,
     standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${version}/standard_fonts`,
@@ -36,7 +35,7 @@ export const renderPage = async (
   scale: number,
   width: number | undefined,
 ): Promise<void> => {
-  pdf?.getPage(pageNumber).then(async (page) => {
+  await pdf?.getPage(pageNumber).then(async (page) => {
     const viewportCanvas = await getViewportCanvas(page, scale)
     const context = canvas?.getContext('2d')
     if (!context || !canvas) throw new Error('canvas context is not loaded')
