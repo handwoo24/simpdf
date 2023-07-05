@@ -1,6 +1,6 @@
 {
   "name": "simpdf",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "a simple pdf viewer component for react",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

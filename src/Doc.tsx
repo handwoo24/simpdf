@@ -28,7 +28,7 @@ const Doc: FC<DocProps> = ({ pageNumber = 1, scale = 1, onLoad, style, url, widt
     renderPage(canvasRef.current, pdf, pageNumber, scale, width)
   }, [pageNumber, pdf, scale, width])
 
-  return <canvas ref={canvasRef} style={{ flex: 1, border: 'none', width: '100%', ...style }} />
+  return <canvas ref={canvasRef} style={style} />
 }
 
 export default Doc
